@@ -6,8 +6,14 @@
 <ul class="list-group">
 
     <?php foreach ($cursos as $curso): ?>
-        <li class="list-group-item">
+        <li class="list-group-item d-flex flex-row justify-content-between">
             <?= $curso->getDescricao(); ?>
+            <div>
+                <a href="/editar-curso?id=<?php echo $curso->getId(); ?>" class="btn btn-warning">Editar</a>
+              
+                <a href="/excluir-curso?id=<?php echo $curso->getId(); ?>" class="btn btn-danger">Excluir</a>
+                
+            </div>
         </li>
     <?php endforeach; ?>
 </ul>

@@ -6,7 +6,7 @@ use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\ORM\EntityManager;
 
-class ListarCursos implements InterfaceControladorRequisicao
+class ListarCursos extends ControllerComHtml implements InterfaceControladorRequisicao
 {
 
     private $repositorioDeCursos;
@@ -22,8 +22,14 @@ class ListarCursos implements InterfaceControladorRequisicao
     public function processaRequisicao():void
     {
         $cursos = $this->repositorioDeCursos->findAll();
-        $titulo = "Lista de Cursos";
-        require_once __DIR__ . "/../../view/cursos/listar-cursos.php";
+
+        echo $this->renderizaHtml('/cursos/listar-cursos.php',[
+            'cursos' => $cursos,
+            'titulo' => 'Lista de Cursos'
+        ]);
+
+        //Utilizando método da classe herdade ControllerComHtml
+        // require_once __DIR__ . "/../../view/cursos/listar-cursos.php";
 
     }
 
