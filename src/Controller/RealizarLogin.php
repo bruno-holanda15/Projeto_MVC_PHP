@@ -3,12 +3,14 @@
 namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Usuario;
+use Alura\Cursos\Controller\FlashMessageTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\Common\Cache\FileCache;
 use Doctrine\ORM\EntityManager;
 
 class RealizarLogin extends ControllerComHtml implements InterfaceControladorRequisicao
 {
+    use FlashMessageTrait;
 
     private $repositorioUsuario;
 
@@ -28,8 +30,12 @@ class RealizarLogin extends ControllerComHtml implements InterfaceControladorReq
         );
         
         if(is_null($email) || $email === false){
-            echo "O e-mail digitado não é válido.";
+
+            $classe = "danger";
+            $mensagem = "O e-mail digitado não é válido.";
+            $this->mensagemSession($classe,$mensagem);
             return;
+
         }
 
         $senha = filter_input(
@@ -44,10 +50,16 @@ class RealizarLogin extends ControllerComHtml implements InterfaceControladorReq
         ]);
 
         if(is_null($usuario) || !$usuario->senhaEstaCorreta($senha)){
-            echo "Senha ou e-mail inválidos.";
+
+            $classe = "danger";
+            $mensagem = "E-mail ou senha inválidos.";
+            $this->mensagemSession($classe,$mensagem);
+            header('Location: /login');
+
             return;
         }
         
+        $_SESSION['logado'] = true;
         header('Location: /listar-cursos');
 
     }
